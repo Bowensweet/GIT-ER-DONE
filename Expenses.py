@@ -46,3 +46,17 @@ print(f"Largest expense: ${largest:,.2f}")
 print(f"Small expenses: {small_count}")
 print(f"Moderate expenses: {moderate_count}")
 print(f"Large expenses: {large_count}")
+
+
+print("Welcome to Rock, Paper, Scissors!")
+print("How many rounds would you like to play?")
+rounds=int(input())
+if rounds <= 0:
+    print("Please enter a positive number of rounds.")
+elif rounds % 2 == 0:
+    print("Please enter an odd number of rounds. There will be no ties!")
+else:
+    print(f"Great! Let's play {rounds} rounds of Rock, Paper, Scissors!")
+
+
+
