@@ -6,19 +6,18 @@ from wordle_functions import (
     has_won
 )
 
-
 def play_game():
-    """Play one round of the word-guessing game."""
+    #Play one round of wordle
     secret_word = choose_word()
     previous_guesses = []
     max_attempts = 6
 
-    print("\nWelcome to Python Wordle!")
+    print("Welcome to Python Wordle!")
     print("Guess the secret five-letter word.")
     print("G = correct letter and position")
     print("Y = letter is in the word, but in the wrong position")
     print("- = letter is not in the word")
-    print("You have six attempts.\n")
+    print("You have six attempts.")
 
     # Continue until the player wins or runs out of attempts.
     while len(previous_guesses) < max_attempts:
@@ -46,7 +45,7 @@ play_again = "yes"
 while play_again == "yes" or play_again == "y":
     play_game()
     play_again = input(
-        "\nWould you like to play again? (yes/no): "
-    ).lower()
+        "Would you like to play again? (YES/NO): "
+    ).upper()
 
 print("Thanks for playing!")
