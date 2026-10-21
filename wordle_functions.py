@@ -1,49 +1,52 @@
-import random
-
-# A list of five-letter words the game can choose from.
-WORDS = ["PLANT", "CRANE", "BRICK", "SHOUT", "FLAME",
-         "GHOST", "TRAIL", "MOUSE", "BREAD", "CLOUD"]
-
-
-def choose_word():
-    """Select and return a random secret word."""
-    return random.choice(WORDS)
+from wordle_functions import (
+    choose_word,
+    get_guess,
+    evaluate_guess,
+    display_guess,
+    has_won
+)
 
 
-def get_guess(previous_guesses):
-    """Get a valid five-letter guess that has not been used."""
-    while True:
-        guess = input("Enter a five-letter word: ").upper()
+def play_game():
+    """Play one round of the word-guessing game."""
+    secret_word = choose_word()
+    previous_guesses = []
+    max_attempts = 6
 
-        if len(guess) != 5 or not guess.isalpha():
-            print("Your guess must contain exactly five letters.")
-        elif guess in previous_guesses:
-            print("You already guessed that word. Try another.")
-        else:
-            return guess
+    print("\nWelcome to Python Wordle!")
+    print("Guess the secret five-letter word.")
+    print("G = correct letter and position")
+    print("Y = letter is in the word, but in the wrong position")
+    print("- = letter is not in the word")
+    print("You have six attempts.\n")
+
+    # Continue until the player wins or runs out of attempts.
+    while len(previous_guesses) < max_attempts:
+        print("Attempt", len(previous_guesses) + 1, "of", max_attempts)
+
+        guess = get_guess(previous_guesses)
+        previous_guesses.append(guess)
+
+        feedback = evaluate_guess(guess, secret_word)
+        display_guess(guess, feedback)
+
+        if has_won(guess, secret_word):
+            print("Congratulations! You guessed the word!")
+            return
+
+        print()
+
+    # Reveal the secret word if the player loses.
+    print("Game over! The secret word was:", secret_word)
 
 
-def evaluate_guess(guess, secret_word):
-    """Return G, Y, or - for each letter."""
-    feedback = []
+# Ask whether the player wants another round.
+play_again = "yes"
 
-    for position in range(5):
-        if guess[position] == secret_word[position]:
-            feedback.append("G")
-        elif guess[position] in secret_word:
-            feedback.append("Y")
-        else:
-            feedback.append("-")
+while play_again == "yes" or play_again == "y":
+    play_game()
+    play_again = input(
+        "\nWould you like to play again? (yes/no): "
+    ).lower()
 
-    return feedback
-
-
-def display_guess(guess, feedback):
-    """Display the guess and its feedback."""
-    print("Guess:    " + " ".join(guess))
-    print("Feedback: " + " ".join(feedback))
-
-
-def has_won(guess, secret_word):
-    """Check whether the player guessed the secret word."""
-    return guess == secret_word
+print("Thanks for playing!")
