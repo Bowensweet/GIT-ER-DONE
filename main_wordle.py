@@ -1,52 +1,59 @@
-from wordle_functions import (
-    choose_word,
-    get_guess,
-    evaluate_guess,
-    display_guess,
-    has_won
-)
+import random
+
+# A list of five-letter words the game can choose from.
+words = ["plant", "crane", "brick", "shout", "flame",
+         "ghost", "trail", "mouse", "bread", "cloud"]
 
 
-def play_game():
-    """Play one round of the word-guessing game."""
-    secret_word = choose_word()
-    previous_guesses = []
-    max_attempts = 6
-
-    print("\nWelcome to Python Wordle!")
-    print("Guess the secret five-letter word.")
-    print("G = correct letter and position")
-    print("Y = letter is in the word, but in the wrong position")
-    print("- = letter is not in the word")
-    print("You have six attempts.\n")
-
-    # Continue until the player wins or runs out of attempts.
-    while len(previous_guesses) < max_attempts:
-        print("Attempt", len(previous_guesses) + 1, "of", max_attempts)
-
-        guess = get_guess(previous_guesses)
-        previous_guesses.append(guess)
-
-        feedback = evaluate_guess(guess, secret_word)
-        display_guess(guess, feedback)
-
-        if has_won(guess, secret_word):
-            print("Congratulations! You guessed the word!")
-            return
-
-        print()
-
-    # Reveal the secret word if the player loses.
-    print("Game over! The secret word was:", secret_word)
+def choose_word():
+    """Select and return a random secret word."""
+    return random.choice(words)
 
 
-# Ask whether the player wants another round.
-play_again = "yes"
+def get_guess(previous_guesses):
+    while True:
+        guess = input("Enter a five-letter word: ").upper()
 
-while play_again == "yes" or play_again == "y":
-    play_game()
-    play_again = input(
-        "\nWould you like to play again? (yes/no): "
-    ).lower()
+        # Check whether every character is a letter.
+        valid_guess = True
 
-print("Thanks for playing!")
+        for letter in guess:
+            if letter < "A" or letter > "Z":
+                valid_guess = False
+
+        # Check the length and whether the guess contains only letters.
+        if len(guess) != 5 or not valid_guess:
+            print("Your guess must contain exactly five letters.")
+
+        # Make sure the player has not used this guess already.
+        elif guess in previous_guesses:
+            print("You already guessed that word. Try another.")
+
+        else:
+            return guess
+
+
+def evaluate_guess(guess, secret_word):
+    #Return G, Y, or - for each letter.
+    feedback = []
+
+    for position in range(5):
+        if guess[position] == secret_word[position]:
+            feedback.append("G")
+        elif guess[position] in secret_word:
+            feedback.append("Y")
+        else:
+            feedback.append("-")
+
+    return feedback
+
+
+def display_guess(guess, feedback):
+    #Display the guess and its feedback.
+    print("Guess:    " + " ".join(guess))
+    print("Feedback: " + " ".join(feedback))
+
+
+def has_won(guess, secret_word):
+    #Check whether the player guessed the secret word.
+    return guess == secret_word
