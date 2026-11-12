@@ -22,10 +22,11 @@ def categorize_teams(season_df):
 
 def display_categories(categories, season):
     """Print each category and its teams (most wins first)."""
-    print(f"===== {season} Season Results =====")
+    print(f"      {season} Season Results      ")
+    print()
     for category, teams in categories.items():
         print(f"{category} ({len(teams)} teams)")
-        print("-" * 40)
+        print()
         if not teams:
             print("  (no teams)")
             continue
@@ -34,12 +35,8 @@ def display_categories(categories, season):
 
 
 def main():
-    try:
-        df = pd.read_csv("cfb.csv")
-    except FileNotFoundError:
-        print("Error: cfb.csv was not found. Put it in the same folder as this program.")
-        return
-
+   
+    df = pd.read_csv("cfb.csv")  
     first_season = df["Season"].min()
     last_season = df["Season"].max()
     print("College Football Season Explorer")
