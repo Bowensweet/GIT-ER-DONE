@@ -29,14 +29,18 @@ def display_categories(categories, season):
         print()
         if not teams:
             print("  (no teams)")
-            continue
-        for team, wins in sorted(teams, key=lambda t: (-t[1], t[0])):
-            print(f"  {team}: {wins} wins")
+        else:
+            for team, wins in sorted(teams, key=lambda t: (-t[1], t[0])):
+                if wins == 1:
+                    label = "win"
+                else:
+                    label = "wins"
+                print(f"  {team}: {wins} {label}")
+        print()
 
 
 def main():
-   
-    df = pd.read_csv("cfb.csv")  
+    df = pd.read_csv("cfb.csv")
     first_season = df["Season"].min()
     last_season = df["Season"].max()
     print("College Football Season Explorer")
